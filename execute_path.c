@@ -13,7 +13,8 @@ char *my_strcpy(char *dest, char const *src)
 	int b = my_strlen(src);
 
 	dest = malloc(sizeof(char) * (b + 1));
-	for(a = 0; src[a] != '\0'; a++) {
+	for (a = 0; src[a] != '\0'; a++)
+	{
 		dest[x] = src[a];
 		x++;
 	}
