@@ -1,57 +1,51 @@
 #include "shell.h"
 /**
- *sstrlen_line - get the argument at the command prompt.
- *Return: character
+ *special_key - execute commands in enter
+ *@line: parameter
 */
-char *sstrlen_line(void)
+void special_key(char *line)
 {
-	char con[1];
-	char *line = malloc(sizeof(char) * 100);
-	size_t a = 0;
-	size_t b = 0;
+	int i = 0;
+	char *tp = my_strcpy(tp, line);
+	char **tmp = delete_delimit(line, "/");
 
-	b = read(1, &con, 1);
-	if (b == 1 && strcmp(con, "\n") == 0)
-		line = "";
-	while (b == 1 && con[0] != '\n')
+	for (i = 0; tmp[i + 1] != NULL; i++)
 	{
-		line[a] = con[0];
-		a++;
-		b = read(1, &con, 1);
 	}
-	line[a] = '\0';
-	return (line);
+	i = execve(tp, &tmp[i], environ);
+	if (i != 0)
+		perror("shell");
 }
 /**
- *main - entry of program
+ *main - entry point
  *Return: 0
 */
 int main(void)
 {
-	char **cmd = NULL;
+	int a = 0;
 	char *line = NULL;
+	size_t n = 100;
 	pid_t pid = 0;
 
 	signal(SIGINT, SIG_IGN);
-	while (1)
+	a = getline(&line, &n, stdin);
+	if (a <= 1)
 	{
-		write(1, "($) ", 4);
-		line = sstrlen_line();
-		if (strcmp(line, "") != 0)
+		while (1)
 		{
-			cmd = delete_delimit(line, " ");
-			pid = fork();
-			if (pid == 0)
+			write(1, "($) ", 4);
+			if (getline(&line, &n, stdin))
 			{
-				if (execute_path(cmd) != 0)
-				{
-					perror("error: ");
-					continue;
-				}
+				line[my_strlen(line) - 1] = '\0';
+				pid = fork();
+				(pid == 0) ? special_key(line) : wait(&pid);
 			}
-			else
-				wait(&pid);
 		}
+	}
+	else
+	{
+		line[my_strlen(line) - 1] = '\0';
+		special_key(line);
 	}
 	return (0);
 }
