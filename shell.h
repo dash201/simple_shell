@@ -17,6 +17,7 @@ void my_putchar(char c);
 int my_putstr(char const *str);
 char *my_strcat(char *dest, char *src);
 int my_strcmp(char *s1, char *s2);
+char *my_strcpy(char *dest, char const *src);
 char **delete_delimit(char *line, char *delim);
 char *copy(char **env, char *part);
 char *my_getenv(char **env, char *rec);
