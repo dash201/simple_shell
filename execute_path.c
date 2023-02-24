@@ -1,6 +1,27 @@
 #include "shell.h"
 
 /**
+ *my_strcpy - execute commands in enter
+ *@src: first parameter
+ *@dest: second parameter
+ *Return: char dest
+*/
+char *my_strcpy(char *dest, char const *src)
+{
+	int a = 0;
+	int x = 0;
+	int b = my_strlen(src);
+
+	dest = malloc(sizeof(char) * (b + 1));
+	for(a = 0; src[a] != '\0'; a++) {
+		dest[x] = src[a];
+		x++;
+	}
+	dest[x] = '\0';
+	return (dest);
+}
+
+/**
  *delete_delimit - separate command from arguments or options
  *@line: first parameter
  *@delim: second parameter
@@ -96,11 +117,6 @@ int execute_path(char **line)
 	{
 		first = strcat(cmd[a], "/");
 		end = strcat(first, line[0]);
-		if (strcmp(line[0], cmd[a]) == 0)
-		{
-			execve(end, line, environ);
-			return (0);
-		}
 		b = execve(end, line, environ);
 		if (b != 0)
 			a++;
