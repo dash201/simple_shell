@@ -98,31 +98,3 @@ char *my_getenv(char **env, char *rec)
 	pa[n] = '\0';
 	return (pa);
 }
-
-/**
- *execute_path - execute the binaries that are in the env variable
- of the PATH
- *@line: command
- *Return: number
-*/
-int execute_path(char **line)
-{
-	int a = 0;
-	int b = 0;
-	char *path = my_getenv(environ, "PATH");
-	char **cmd = delete_delimit(path, ":");
-	char *first;
-	char *end;
-
-	while (cmd[a] != NULL)
-	{
-		first = strcat(cmd[a], "/");
-		end = strcat(first, line[0]);
-		b = execve(end, line, environ);
-		if (b != 0)
-			a++;
-		else
-			return (0);
-	}
-	return (b);
-}
